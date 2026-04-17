@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            direction: rtl;
+        }
+        .container {
+            text-align: center;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 20%;
+            margin-bottom: 20px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: pulse 2s infinite;
+        }
+        .logo span {
+            font-size: 60px;
+            color: #1e3a8a;
+            font-weight: bold;
+        }
+        h1 {
+            font-size: 28px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+        .loader {
+            width: 200px;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .loader-bar {
+            width: 40%;
+            height: 100%;
+            background: white;
+            position: absolute;
+            left: -40%;
+            animation: move 1.5s infinite linear;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @keyframes move {
+            from { left: -40%; }
+            to { left: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <span>M</span>
+        </div>
+        <h1>مينا بيزنس - Mena Business</h1>
+        <p>جاري تحميل البيانات...</p>
+        <div class="loader">
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+</body>
+</html>

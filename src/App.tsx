@@ -1242,19 +1242,19 @@ export default function App() {
     success: { 
       scale: [1, 1.05, 1],
       backgroundColor: ["#10b981", "#059669", "#10b981"],
-      transition: { duration: 0.3 }
+      transition: { type: "keyframes", duration: 0.3 }
     },
     error: {
       x: [0, -4, 4, -4, 4, 0],
       backgroundColor: ["#ef4444", "#dc2626", "#ef4444"],
-      transition: { duration: 0.4 }
+      transition: { type: "keyframes", duration: 0.4 }
     }
   };
 
   const shake = {
     error: {
       x: [0, -4, 4, -4, 4, 0],
-      transition: { duration: 0.4 }
+      transition: { type: "keyframes", duration: 0.4 }
     }
   };
 
@@ -1262,7 +1262,7 @@ export default function App() {
     success: {
       scale: [1, 1.05, 1],
       backgroundColor: ["#ffffff", "#f0fdf4", "#ffffff"],
-      transition: { duration: 0.3 }
+      transition: { type: "keyframes", duration: 0.3 }
     }
   };
 
@@ -9730,7 +9730,8 @@ export default function App() {
               type: "spring", 
               stiffness: 500, 
               damping: 30,
-              ...(showToast.type === 'error' ? { duration: 0.4 } : {})
+              x: { type: showToast.type === 'error' ? "keyframes" : "spring", duration: 0.4 },
+              scale: { type: showToast.type === 'error' ? "spring" : "keyframes", duration: 0.3 }
             }}
             className={cn(
               "fixed bottom-8 left-1/2 z-[100] px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-white font-bold",

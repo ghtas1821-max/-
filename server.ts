@@ -10,7 +10,8 @@ import crypto from 'crypto';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const db = new Database('mena_business.db');
+const dbPath = process.env.DB_PATH || 'mena_business.db';
+const db = new Database(dbPath);
 db.pragma('journal_mode = WAL');
 
 const hashPassword = (password: string) => {
@@ -320,11 +321,20 @@ const initDb = () => {
     'salaries', 'users', 'transactions', 'expenses', 'treasury',
     'warehouses', 'stock_movements', 'expense_categories', 'branches', 'departments'
   ];
-  tablesWithSync.forEach(table => ensureColumnExists(table, 'updatedAt', 'INTEGER'));
+  
+  console.log('Running database migrations...');
+  tablesWithSync.forEach(table => {
+    try {
+      ensureColumnExists(table, 'updatedAt', 'INTEGER');
+    } catch (e) {
+      console.error(`Migration failed for table ${table}:`, e);
+    }
+  });
 
   // Additional columns for users table (lockout system)
   ensureColumnExists('users', 'failedAttempts', 'INTEGER DEFAULT 0');
   ensureColumnExists('users', 'isLocked', 'INTEGER DEFAULT 0');
+  console.log('Database migrations completed.');
 
   // Ensure default admin exists with hashed password and reset lockout
   const admin = db.prepare('SELECT * FROM users WHERE username = ?').get('admin') as any;
@@ -711,15 +721,31 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
+    if (fs.existsSync(distPath)) {
+      app.use(express.static(distPath));
+      app.get('*', (req, res) => {
+        const indexPath = path.join(distPath, 'index.html');
+        if (fs.existsSync(indexPath)) {
+          res.sendFile(indexPath);
+        } else {
+          res.status(404).send('Frontend build not found (index.html missing)');
+        }
+      });
+    } else {
+      app.get('*', (req, res) => {
+        res.status(404).send('Frontend build not found (dist directory missing)');
+      });
+    }
   }
 
   const PORT = 3000;
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server started in ${process.env.NODE_ENV || 'development'} mode`);
+    console.log(`Listening on http://0.0.0.0:${PORT}`);
+    console.log(`Database path: ${path.resolve(dbPath)}`);
+    if (process.send) {
+      process.send('server-ready');
+    }
   });
 }
 
