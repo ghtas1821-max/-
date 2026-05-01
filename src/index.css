@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@layer base {
+  table {
+    border-collapse: collapse !important;
+  }
+  th, td {
+    border: 1px solid black !important;
+  }
+  /* Target all border classes to be black */
+  .border, .border-b, .border-t, .border-l, .border-r, .border-x, .border-y {
+    border-color: black !important;
+  }
+  /* Target divide classes to be black */
+  .divide-y > * + * {
+    border-top-color: black !important;
+  }
+  .divide-x > * + * {
+    border-right-color: black !important;
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #invoice-print-area, #invoice-print-area * {
+    visibility: visible;
+  }
+  #invoice-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 20px;
+    background: white;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

@@ -1,0 +1,27 @@
+appId: com.mena.business
+productName: MenaBusiness
+directories:
+  output: build
+  buildResources: build-resources
+files:
+  - dist/**/*
+  - node_modules/**/*
+  - server.js
+  - electron-main.js
+  - preload.cjs
+  - splash.html
+  - package.json
+win:
+  target: nsis
+  icon: public/icon.png
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Mena Business
+  artifactName: MenaBusinessSetup.${ext}
+  uninstallDisplayName: Mena Business Uninstaller
+extraMetadata:
+  main: electron-main.js
+asar: true

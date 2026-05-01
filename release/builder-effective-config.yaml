@@ -1,0 +1,31 @@
+directories:
+  output: release
+  buildResources: build
+appId: com.mena.business
+productName: Mena Business POS
+asar: true
+asarUnpack:
+  - '**/node_modules/better-sqlite3/**/*'
+  - '**/node_modules/sqlite3/**/*'
+files:
+  - filter:
+      - dist/**/*
+      - main.js
+      - server.js
+      - package.json
+      - splash.html
+      - public/**/*
+      - node_modules/**/*
+extraResources:
+  - filter:
+      - mena_business.db
+win:
+  target:
+    - nsis
+    - portable
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+electronVersion: 41.2.1
